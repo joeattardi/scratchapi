@@ -1,0 +1,30 @@
+{
+  "name": "scratchapi",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist-electron/index.js",
+  "scripts": {
+    "dev": "vite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "electron": "^39.2.6",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.6",
+    "vite-plugin-electron": "^0.29.0",
+    "vite-plugin-electron-renderer": "^0.14.6"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.17",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "tailwindcss": "^4.1.17"
+  }
+}
