@@ -20,8 +20,8 @@ export default function App() {
                 <h2 className="text-lg font-bold">Request</h2>
                 <div className="flex items-center gap-2">
                     <Input
-                        type="text" 
-                        placeholder="Enter URL" 
+                        type="text"
+                        placeholder="Enter URL"
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
                     />
@@ -30,7 +30,9 @@ export default function App() {
             </section>
             <section>
                 <h2 className="text-lg font-bold">Response</h2>
-                <code><pre>{responseBody}</pre></code>
+                <code>
+                    <pre>{responseBody}</pre>
+                </code>
             </section>
         </main>
     );
