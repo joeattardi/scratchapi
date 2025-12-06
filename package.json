@@ -4,19 +4,31 @@
   "type": "module",
   "main": "dist-electron/index.js",
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && electron-builder",
     "dev": "vite"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
+  "build": {
+    "appId": "com.joeattardi.scratchapi",
+    "productName": "ScratchAPI",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ]
+  },
   "devDependencies": {
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "electron": "^39.2.6",
+    "electron-builder": "^26.0.12",
     "typescript": "^5.9.3",
     "vite": "^7.2.6",
     "vite-plugin-electron": "^0.29.0",
