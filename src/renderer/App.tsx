@@ -1,16 +1,17 @@
-import { Button } from './components/ui/button';
-import { Input } from './components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 
 export default function App() {
     const [url, setUrl] = useState<string>('');
+    const [responseBody, setResponseBody] = useState<string>('');
 
     async function onClickSend() {
         const response = await window.electronAPI.sendRequest({
             url
         });
 
-        console.log(response);
+        setResponseBody(JSON.stringify(response, null, 2));
     }
 
     return (
@@ -29,6 +30,7 @@ export default function App() {
             </section>
             <section>
                 <h2 className="text-lg font-bold">Response</h2>
+                <code><pre>{responseBody}</pre></code>
             </section>
         </main>
     );
