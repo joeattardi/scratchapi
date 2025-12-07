@@ -1,7 +1,7 @@
-import type { HttpRequest } from '../shared/types';
+import type { HttpRequest, HttpResponse } from '../shared/types';
 
 export interface ElectronAPI {
-    sendRequest: (request: HttpRequest) => Promise<object>;
+    sendRequest: (request: HttpRequest) => Promise<HttpResponse>;
 }
 
 declare global {

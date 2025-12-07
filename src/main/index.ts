@@ -1,7 +1,7 @@
-import { app, BrowserWindow, ipcMain, type IpcMainInvokeEvent } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { HttpRequest } from '../shared/types';
+import { sendRequest } from './sendRequest';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -25,9 +25,3 @@ app.whenReady().then(() => {
 
     ipcMain.handle('sendRequest', sendRequest);
 });
-
-async function sendRequest(_event: IpcMainInvokeEvent, request: HttpRequest) {
-    const response = await fetch(request.url);
-    const data = await response.json();
-    return data;
-}
