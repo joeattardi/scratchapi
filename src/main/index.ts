@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.whenReady().then(() => {
     const win = new BrowserWindow({
-        title: 'Request',
+        title: 'ScratchAPI',
         webPreferences: {
             preload: path.join(__dirname, './preload.mjs')
         }
@@ -16,6 +16,7 @@ app.whenReady().then(() => {
     // You can use `process.env.VITE_DEV_SERVER_URL` when the vite command is called `serve`
     if (process.env.VITE_DEV_SERVER_URL) {
         win.loadURL(process.env.VITE_DEV_SERVER_URL);
+        win.maximize();
         win.webContents.openDevTools();
     } else {
         // Load your file
