@@ -8,4 +8,6 @@ export interface HttpRequest {
 export interface HttpResponse {
     body: string;
     status: number;
+    duration: number;
+    headers: Record<string, string>;
 }
