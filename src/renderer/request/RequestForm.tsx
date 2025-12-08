@@ -7,9 +7,10 @@ import { PaperPlaneRightIcon } from '@phosphor-icons/react';
 
 interface RequestFormProps {
     onSend: (request: { method: HttpMethod; url: string }) => void;
+    isLoading: boolean;
 }
 
-export default function RequestForm({ onSend }: RequestFormProps) {
+export default function RequestForm({ onSend, isLoading }: RequestFormProps) {
     const [method, setMethod] = useState<HttpMethod>('GET');
     const [url, setUrl] = useState<string>('https://jsonplaceholder.typicode.com/users');
 
@@ -26,12 +27,12 @@ export default function RequestForm({ onSend }: RequestFormProps) {
             <MethodSelect value={method} onChange={setMethod} />
             <Input
                 type="text"
-                className="rounded-none"
+                className="rounded-none bg-zinc-100"
                 placeholder="Enter URL"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
             />
-            <Button type="submit" disabled={!url} className="rounded-tl-none rounded-bl-none">
+            <Button type="submit" disabled={!url || isLoading} className="rounded-tl-none rounded-bl-none">
                 <PaperPlaneRightIcon />
                 Send
             </Button>
