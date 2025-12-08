@@ -9,7 +9,7 @@ interface MethodSelectProps {
 export default function MethodSelect({ value, onChange }: MethodSelectProps) {
     return (
         <Select value={value} onValueChange={onChange}>
-            <SelectTrigger className="w-32">
+            <SelectTrigger className="w-32 rounded-tr-none rounded-br-none border-r-0">
                 <SelectValue placeholder="Method" />
             </SelectTrigger>
             <SelectContent>

@@ -3,6 +3,7 @@ import EmptyState from './EmptyState';
 import LoadingState from './LoadingState';
 import ResponseStatus from './ResponseStatus';
 import prettyMilliseconds from 'pretty-ms';
+import { Badge } from '@/components/ui/badge';
 
 interface ResponseViewProps {
     isLoading: boolean;
@@ -19,8 +20,7 @@ export default function ResponseView({ isLoading, response }: ResponseViewProps)
             <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                     <ResponseStatus status={response.status} />
-                    <span className="text-sm text-zinc-500">•</span>
-                    <div className="text-sm text-zinc-500">{prettyMilliseconds(response.duration)}</div>
+                    <Badge variant="secondary">{prettyMilliseconds(response.duration)}</Badge>
                 </div>
                 {response.body.length > 0 && (
                     <div className="bg-zinc-50 border border-zinc-200 p-2 rounded-md text-sm overflow-auto">
