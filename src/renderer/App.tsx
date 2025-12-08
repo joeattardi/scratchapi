@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { HttpMethod, HttpResponse } from 'src/shared/types';
 import RequestForm from './request/RequestForm';
 import ResponseView from './response/ResponseView';
+import RequestSettings from './request/RequestSettings';
 
 export default function App() {
     const [response, setResponse] = useState<HttpResponse | null>(null);
@@ -25,6 +26,7 @@ export default function App() {
                 <section className="flex flex-col gap-2">
                     <h2 className="uppercase text-xs text-zinc-500">Request</h2>
                     <RequestForm onSend={onClickSend} isLoading={isLoading} />
+                    <RequestSettings />
                 </section>
                 <section className="flex flex-col gap-2 min-h-0 flex-1">
                     <h2 className="uppercase text-xs text-zinc-500">Response</h2>
