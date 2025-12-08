@@ -20,13 +20,13 @@ export default function App() {
     }
 
     return (
-        <div>
-            <main className="p-4 flex flex-col gap-4">
+        <div className="h-full flex flex-col">
+            <main className="p-4 flex flex-col gap-4 overflow-hidden flex-1">
                 <section className="flex flex-col gap-2">
                     <h2 className="uppercase text-xs">Request</h2>
                     <RequestForm onSend={onClickSend} />
                 </section>
-                <section className="flex flex-col gap-2">
+                <section className="flex flex-col gap-2 min-h-0 flex-1">
                     <h2 className="uppercase text-xs">Response</h2>
                     <ResponseView isLoading={isLoading} response={response} />
                 </section>

@@ -17,13 +17,13 @@ export default function ResponseView({ isLoading, response }: ResponseViewProps)
 
     if (response) {
         return (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 min-h-0 flex-1">
                 <div className="flex items-center gap-2">
                     <ResponseStatus status={response.status} />
                     <Badge variant="secondary">{prettyMilliseconds(response.duration)}</Badge>
                 </div>
                 {response.body.length > 0 && (
-                    <div className="bg-zinc-50 border border-zinc-200 p-2 rounded-md text-sm overflow-auto">
+                    <div className="bg-zinc-50 border border-zinc-200 p-2 rounded-md text-sm overflow-y-auto min-h-0 flex-1">
                         <pre>{response.body}</pre>
                     </div>
                 )}
