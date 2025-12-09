@@ -11,6 +11,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { XIcon } from '@phosphor-icons/react';
+import { useTranslation } from 'react-i18next';
 
 interface QueryParam {
     id: string;
@@ -19,6 +20,8 @@ interface QueryParam {
 }
 
 export default function RequestParams() {
+    const { t } = useTranslation();
+
     const [params, setParams] = useState<QueryParam[]>([
         { id: crypto.randomUUID(), key: '', value: '' },
     ]);
@@ -47,8 +50,8 @@ export default function RequestParams() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Key</TableHead>
-                            <TableHead>Value</TableHead>
+                            <TableHead>{t('request.params.key')}</TableHead>
+                            <TableHead>{t('request.params.value')}</TableHead>
                             <TableHead className="w-16"></TableHead>
                         </TableRow>
                     </TableHeader>
@@ -58,7 +61,7 @@ export default function RequestParams() {
                                 <TableCell>
                                     <Input
                                         type="text"
-                                        placeholder="Key"
+                                        placeholder={t('request.params.key')}
                                         value={param.key}
                                         onChange={(e) => updateParam(param.id, 'key', e.target.value)}
                                     />
@@ -66,7 +69,7 @@ export default function RequestParams() {
                                 <TableCell>
                                     <Input
                                         type="text"
-                                        placeholder="Value"
+                                        placeholder={t('request.params.value')}
                                         value={param.value}
                                         onChange={(e) => updateParam(param.id, 'value', e.target.value)}
                                     />
@@ -85,7 +88,7 @@ export default function RequestParams() {
                     </TableBody>
                 </Table>
                 <Button onClick={addParam} variant="outline" className="self-start">
-                    Add Parameter
+                    {t('request.params.add')}
                 </Button>
             </div>
         </TabsContent>

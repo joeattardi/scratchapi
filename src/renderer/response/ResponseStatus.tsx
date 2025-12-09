@@ -1,56 +1,33 @@
 import { Badge } from '@/components/ui/badge';
+import i18n from '@/i18n';
 
 interface ResponseStatusProps {
     status: number;
 }
 
-const responseStatusText: Record<number, string> = {
-    100: "Continue",
-    101: "Switching Protocols",
-    102: "Processing",
-    200: "OK",
-    201: "Created",
-    202: "Accepted",
-    204: "No Content",
-    301: "Moved Permanently",
-    302: "Found",
-    304: "Not Modified",
-    400: "Bad Request",
-    401: "Unauthorized",
-    403: "Forbidden",
-    404: "Not Found",
-    405: "Method Not Allowed",
-    409: "Conflict",
-    422: "Unprocessable Entity",
-    429: "Too Many Requests",
-    500: "Internal Server Error",
-    502: "Bad Gateway",
-    503: "Service Unavailable",
-};
-
 function getBadgeStatusText(status: number) {
-    if (responseStatusText[status]) {
-        return responseStatusText[status];
+    if (i18n.exists(`http.status.${status}`)) {
+        return i18n.t(`http.status.${status}`);
     }
 
     if (status >= 500) {
-        return 'Server Error';
+        return i18n.t('http.responseCategory.5xx');
     }
 
     if (status >= 400) {
-        return 'Client Error';
+        return i18n.t('http.responseCategory.4xx');
     }
 
     if (status >= 300) {
-        return 'Redirection';
+        return i18n.t('http.responseCategory.3xx');
     }
 
     if (status >= 200) {
-        return 'Success';
+        return i18n.t('http.responseCategory.2xx');
     }
 
     if (status >= 100) {
-        return 'Informational';
+        return i18n.t('http.responseCategory.1xx');
     }
 }
 

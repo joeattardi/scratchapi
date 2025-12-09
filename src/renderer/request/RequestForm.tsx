@@ -4,6 +4,7 @@ import { HttpMethod } from '../../shared/types';
 import MethodSelect from './MethodSelect';
 import { Button } from '@/components/ui/button';
 import { PaperPlaneRightIcon } from '@phosphor-icons/react';
+import { useTranslation } from 'react-i18next';
 
 interface RequestFormProps {
     onSend: (request: { method: HttpMethod; url: string }) => void;
@@ -11,6 +12,7 @@ interface RequestFormProps {
 }
 
 export default function RequestForm({ onSend, isLoading }: RequestFormProps) {
+    const { t } = useTranslation();
     const [method, setMethod] = useState<HttpMethod>('GET');
     const [url, setUrl] = useState<string>('https://jsonplaceholder.typicode.com/users');
 
@@ -27,14 +29,14 @@ export default function RequestForm({ onSend, isLoading }: RequestFormProps) {
             <MethodSelect value={method} onChange={setMethod} />
             <Input
                 type="text"
-                className="rounded-none bg-zinc-100"
-                placeholder="Enter URL"
+                className="rounded-none bg-zinc-100 focus-visible:border focus-visible:ring-0"
+                placeholder={t('request.enterUrl')}
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
             />
             <Button type="submit" disabled={!url || isLoading} className="rounded-tl-none rounded-bl-none">
                 <PaperPlaneRightIcon />
-                Send
+                {t('request.send')}
             </Button>
         </form>
     );
