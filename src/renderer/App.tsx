@@ -28,14 +28,14 @@ export default function App() {
     return (
         <div className="h-full flex flex-col">
             <ResizablePanelGroup direction="horizontal">
-                <ResizablePanel defaultSize={50}>
+                <ResizablePanel defaultSize={50} minSize={20}>
                     <section className="flex flex-col gap-2 p-4">
                         <RequestForm onSend={onClickSend} isLoading={isLoading} />
                         <RequestSettings />
                     </section>
                 </ResizablePanel>
                 <ResizableHandle />
-                <ResizablePanel defaultSize={50}>
+                <ResizablePanel defaultSize={50} minSize={20}>
                     <section className="flex flex-col gap-2 min-h-0 flex-1 p-4">
                         <ResponseView response={response} isLoading={isLoading} />
                     </section>
