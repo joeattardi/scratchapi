@@ -10,6 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { XIcon } from '@phosphor-icons/react';
 
 interface QueryParam {
     id: string;
@@ -76,7 +77,7 @@ export default function RequestParams() {
                                         size="sm"
                                         onClick={() => deleteParam(param.id)}
                                     >
-                                        Delete
+                                        <XIcon />
                                     </Button>
                                 </TableCell>
                             </TableRow>

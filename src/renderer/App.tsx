@@ -22,7 +22,7 @@ export default function App() {
 
     return (
         <div className="h-full flex flex-col">
-            <main className="p-4 flex flex-col gap-4 overflow-hidden flex-1">
+            <main className="p-4 grid grid-rows-[auto_1fr] grid-cols-1 lg:grid-cols-2 lg:grid-rows-1 gap-4 overflow-hidden flex-1">
                 <section className="flex flex-col gap-2">
                     <h2 className="uppercase text-xs text-zinc-500">Request</h2>
                     <RequestForm onSend={onClickSend} isLoading={isLoading} />
