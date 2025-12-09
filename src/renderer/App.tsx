@@ -3,6 +3,11 @@ import { HttpMethod, HttpResponse } from 'src/shared/types';
 import RequestForm from './request/RequestForm';
 import ResponseView from './response/ResponseView';
 import RequestSettings from './request/RequestSettings';
+import {
+    ResizableHandle,
+    ResizablePanel,
+    ResizablePanelGroup,
+} from "@/components/ui/resizable"
 
 export default function App() {
     const [response, setResponse] = useState<HttpResponse | null>(null);
@@ -22,17 +27,20 @@ export default function App() {
 
     return (
         <div className="h-full flex flex-col">
-            <main className="p-4 grid grid-rows-[auto_1fr] grid-cols-1 lg:grid-cols-2 lg:grid-rows-1 gap-4 overflow-hidden flex-1">
-                <section className="flex flex-col gap-2">
-                    <h2 className="uppercase text-xs text-zinc-500">Request</h2>
-                    <RequestForm onSend={onClickSend} isLoading={isLoading} />
-                    <RequestSettings />
-                </section>
-                <section className="flex flex-col gap-2 min-h-0 flex-1">
-                    <h2 className="uppercase text-xs text-zinc-500">Response</h2>
-                    <ResponseView response={response} isLoading={isLoading} />
-                </section>
-            </main>
+            <ResizablePanelGroup direction="horizontal">
+                <ResizablePanel defaultSize={50}>
+                    <section className="flex flex-col gap-2 p-4">
+                        <RequestForm onSend={onClickSend} isLoading={isLoading} />
+                        <RequestSettings />
+                    </section>
+                </ResizablePanel>
+                <ResizableHandle />
+                <ResizablePanel defaultSize={50}>
+                    <section className="flex flex-col gap-2 min-h-0 flex-1 p-4">
+                        <ResponseView response={response} isLoading={isLoading} />
+                    </section>
+                </ResizablePanel>
+            </ResizablePanelGroup>
         </div>
     );
 }
