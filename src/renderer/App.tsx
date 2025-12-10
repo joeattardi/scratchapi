@@ -28,10 +28,10 @@ export default function App() {
     }
 
     return (
-        <div className="h-full flex flex-col">
+        <div className="h-full min-h-0 flex flex-col overflow-hidden">
             <ResizablePanelGroup direction="horizontal">
-                <ResizablePanel defaultSize={50} minSize={20}>
-                    <section className="flex flex-col gap-2 p-4">
+                <ResizablePanel defaultSize={50} minSize={20} className="h-full min-h-0">
+                    <section className="h-full min-h-0 flex flex-col gap-2 p-4">
                         <RequestForm 
                             onSend={onClickSend} 
                             isLoading={isLoading}
@@ -44,9 +44,11 @@ export default function App() {
                     </section>
                 </ResizablePanel>
                 <ResizableHandle />
-                <ResizablePanel defaultSize={50} minSize={20}>
-                    <section className="flex flex-col gap-2 min-h-0 flex-1 p-4">
-                        <ResponseView response={response} isLoading={isLoading} />
+                <ResizablePanel defaultSize={50} minSize={20} className="h-full min-h-0">
+                    <section className="h-full min-h-0 flex flex-col gap-2 flex-1 p-4">
+                        <div className="flex-1 min-h-0 flex flex-col">
+                            <ResponseView response={response} isLoading={isLoading} />
+                        </div>
                     </section>
                 </ResizablePanel>
             </ResizablePanelGroup>

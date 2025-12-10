@@ -23,8 +23,8 @@ export default function ResponseView({ isLoading, response }: ResponseViewProps)
                     <Badge variant="secondary">{prettyMilliseconds(response.duration)}</Badge>
                 </div>
                 {response.body.length > 0 && (
-                    <div className="bg-zinc-50 border border-zinc-200 p-2 rounded-md text-sm overflow-y-auto min-h-0 flex-1">
-                        <pre>{response.body}</pre>
+                    <div className="bg-zinc-50 border border-zinc-200 p-2 rounded-md text-sm min-h-0 flex-1 h-full flex flex-col">
+                        <pre className="overflow-auto flex-1 min-h-0 whitespace-pre-wrap wrap-break-word">{response.body}</pre>
                     </div>
                 )}
             </div>
