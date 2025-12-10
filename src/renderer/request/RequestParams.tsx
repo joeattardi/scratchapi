@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     Table,
     TableBody,
@@ -17,6 +18,7 @@ interface QueryParam {
     id: string;
     key: string;
     value: string;
+    enabled?: boolean;
 }
 
 interface RequestParamsProps {
@@ -36,19 +38,20 @@ function parseQueryParams(url: string, existingParams?: QueryParam[]): QueryPara
             params.push({
                 id: existing?.id ?? crypto.randomUUID(),
                 key,
-                value
+                value,
+                enabled: existing?.enabled ?? true
             });
         });
 
         // Always have at least one empty row
         if (params.length === 0) {
-            params.push({ id: crypto.randomUUID(), key: '', value: '' });
+            params.push({ id: crypto.randomUUID(), key: '', value: '', enabled: true });
         }
 
         return params;
     } catch {
         // If URL is invalid, return empty params
-        return [{ id: crypto.randomUUID(), key: '', value: '' }];
+        return [{ id: crypto.randomUUID(), key: '', value: '', enabled: true }];
     }
 }
 
@@ -59,9 +62,9 @@ function buildUrlWithParams(baseUrl: string, params: QueryParam[]): string {
         // Clear existing query params
         urlObj.search = '';
 
-        // Add new params (only if they have a key)
+        // Add new params (only if they have a key and are enabled)
         params.forEach(param => {
-            if (param.key.trim()) {
+            if (param.key.trim() && param.enabled !== false) {
                 urlObj.searchParams.append(param.key, param.value);
             }
         });
@@ -107,7 +110,7 @@ export default function RequestParams({ url, onUrlChange }: RequestParamsProps) 
     }, [url, onUrlChange]);
 
     const addParam = () => {
-        updateParamsAndUrl([...params, { id: crypto.randomUUID(), key: '', value: '' }]);
+        updateParamsAndUrl([...params, { id: crypto.randomUUID(), key: '', value: '', enabled: true }]);
     };
 
     const updateParam = useCallback((id: string, field: 'key' | 'value', newValue: string) => {
@@ -117,12 +120,19 @@ export default function RequestParams({ url, onUrlChange }: RequestParamsProps) 
         updateParamsAndUrl(updatedParams);
     }, [params, updateParamsAndUrl]);
 
+    const toggleParam = useCallback((id: string) => {
+        const updatedParams = params.map(param =>
+            param.id === id ? { ...param, enabled: !param.enabled } : param
+        );
+        updateParamsAndUrl(updatedParams);
+    }, [params, updateParamsAndUrl]);
+
     const deleteParam = useCallback((id: string) => {
         let updatedParams = params.filter(param => param.id !== id);
 
         // Always have at least one empty row
         if (updatedParams.length === 0) {
-            updatedParams = [{ id: crypto.randomUUID(), key: '', value: '' }];
+            updatedParams = [{ id: crypto.randomUUID(), key: '', value: '', enabled: true }];
         }
 
         updateParamsAndUrl(updatedParams);
@@ -134,41 +144,51 @@ export default function RequestParams({ url, onUrlChange }: RequestParamsProps) 
                 <Table>
                     <TableHeader>
                         <TableRow>
+                            <TableHead className="w-12"></TableHead>
                             <TableHead>{t('request.params.key')}</TableHead>
                             <TableHead>{t('request.params.value')}</TableHead>
                             <TableHead className="w-16"></TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {params.map((param) => (
-                            <TableRow key={param.id}>
-                                <TableCell>
-                                    <Input
-                                        type="text"
-                                        placeholder={t('request.params.key')}
-                                        value={param.key}
-                                        onChange={(e) => updateParam(param.id, 'key', e.target.value)}
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    <Input
-                                        type="text"
-                                        placeholder={t('request.params.value')}
-                                        value={param.value}
-                                        onChange={(e) => updateParam(param.id, 'value', e.target.value)}
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => deleteParam(param.id)}
-                                    >
-                                        <XIcon />
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {params.map((param) => {
+                            const isEnabled = param.enabled !== false;
+                            return (
+                                <TableRow key={param.id}>
+                                    <TableCell>
+                                        <Checkbox
+                                            checked={isEnabled}
+                                            onCheckedChange={() => toggleParam(param.id)}
+                                        />
+                                    </TableCell>
+                                    <TableCell className={isEnabled ? '' : 'opacity-40'}>
+                                        <Input
+                                            type="text"
+                                            placeholder={t('request.params.key')}
+                                            value={param.key}
+                                            onChange={(e) => updateParam(param.id, 'key', e.target.value)}
+                                        />
+                                    </TableCell>
+                                    <TableCell className={isEnabled ? '' : 'opacity-40'}>
+                                        <Input
+                                            type="text"
+                                            placeholder={t('request.params.value')}
+                                            value={param.value}
+                                            onChange={(e) => updateParam(param.id, 'value', e.target.value)}
+                                        />
+                                    </TableCell>
+                                    <TableCell className={isEnabled ? '' : 'opacity-40'}>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => deleteParam(param.id)}
+                                        >
+                                            <XIcon />
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
                 <Button onClick={addParam} variant="outline" className="self-start">

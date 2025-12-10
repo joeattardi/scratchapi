@@ -13,6 +13,7 @@ interface HeaderEntry {
     id: string;
     key: string;
     value: string;
+    enabled?: boolean;
 }
 
 export default function App() {
@@ -25,10 +26,10 @@ export default function App() {
     async function onClickSend() {
         setLoading(true);
         setResponse(null);
-        // Build headers object, lowercasing header names and skipping empty keys
+        // Build headers object, lowercasing header names and skipping empty or disabled headers
         const headersObj: Record<string, string> = {};
         headers.forEach(h => {
-            if (h.key.trim()) {
+            if (h.key.trim() && h.enabled !== false) {
                 headersObj[h.key.trim().toLowerCase()] = h.value;
             }
         });

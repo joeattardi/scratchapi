@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     Table,
     TableBody,
@@ -17,6 +18,7 @@ interface Header {
     id: string;
     key: string;
     value: string;
+    enabled?: boolean;
 }
 
 interface RequestHeadersProps {
@@ -28,16 +30,20 @@ export default function RequestHeaders({ headers, onChange }: RequestHeadersProp
     const { t } = useTranslation();
 
     const addHeader = useCallback(() => {
-        onChange([...headers, { id: crypto.randomUUID(), key: '', value: '' }]);
+        onChange([...headers, { id: crypto.randomUUID(), key: '', value: '', enabled: true }]);
     }, [headers, onChange]);
 
     const updateHeader = useCallback((id: string, field: 'key' | 'value', newValue: string) => {
         onChange(headers.map(h => h.id === id ? { ...h, [field]: newValue } : h));
     }, [headers, onChange]);
 
+    const toggleHeader = useCallback((id: string) => {
+        onChange(headers.map(h => h.id === id ? { ...h, enabled: !h.enabled } : h));
+    }, [headers, onChange]);
+
     const deleteHeader = useCallback((id: string) => {
         const next = headers.filter(h => h.id !== id);
-        onChange(next.length ? next : [{ id: crypto.randomUUID(), key: '', value: '' }]);
+        onChange(next.length ? next : [{ id: crypto.randomUUID(), key: '', value: '', enabled: true }]);
     }, [headers, onChange]);
 
     return (
@@ -46,41 +52,51 @@ export default function RequestHeaders({ headers, onChange }: RequestHeadersProp
                 <Table>
                     <TableHeader>
                         <TableRow>
+                            <TableHead className="w-12"></TableHead>
                             <TableHead>{t('request.headers.key')}</TableHead>
                             <TableHead>{t('request.headers.value')}</TableHead>
                             <TableHead className="w-16"></TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {headers.map((h) => (
-                            <TableRow key={h.id}>
-                                <TableCell>
-                                    <Input
-                                        type="text"
-                                        placeholder={t('request.headers.key')}
-                                        value={h.key}
-                                        onChange={(e) => updateHeader(h.id, 'key', e.target.value)}
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    <Input
-                                        type="text"
-                                        placeholder={t('request.headers.value')}
-                                        value={h.value}
-                                        onChange={(e) => updateHeader(h.id, 'value', e.target.value)}
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => deleteHeader(h.id)}
-                                    >
-                                        <XIcon />
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {headers.map((h) => {
+                            const isEnabled = h.enabled !== false;
+                            return (
+                                <TableRow key={h.id}>
+                                    <TableCell>
+                                        <Checkbox
+                                            checked={isEnabled}
+                                            onCheckedChange={() => toggleHeader(h.id)}
+                                        />
+                                    </TableCell>
+                                    <TableCell className={isEnabled ? '' : 'opacity-40'}>
+                                        <Input
+                                            type="text"
+                                            placeholder={t('request.headers.key')}
+                                            value={h.key}
+                                            onChange={(e) => updateHeader(h.id, 'key', e.target.value)}
+                                        />
+                                    </TableCell>
+                                    <TableCell className={isEnabled ? '' : 'opacity-40'}>
+                                        <Input
+                                            type="text"
+                                            placeholder={t('request.headers.value')}
+                                            value={h.value}
+                                            onChange={(e) => updateHeader(h.id, 'value', e.target.value)}
+                                        />
+                                    </TableCell>
+                                    <TableCell className={isEnabled ? '' : 'opacity-40'}>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => deleteHeader(h.id)}
+                                        >
+                                            <XIcon />
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
                 <Button onClick={addHeader} variant="outline" className="self-start">
