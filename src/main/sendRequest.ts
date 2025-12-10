@@ -13,11 +13,36 @@ async function getResponseBody(response: Response) {
 
 export async function sendRequest(_event: IpcMainInvokeEvent, request: HttpRequest): Promise<HttpResponse> {
     const startTime = Date.now();
+    // Normalize incoming headers (HeadersInit can be various shapes). Build a simple map with lowercase keys.
+    const normalizedHeaders: Record<string, string> = {};
+    try {
+        if (request.headers) {
+            if (Array.isArray(request.headers)) {
+                request.headers.forEach(([k, v]) => {
+                    if (k) normalizedHeaders[String(k).toLowerCase()] = String(v);
+                });
+            } else if (request.headers instanceof Headers) {
+                request.headers.forEach((v, k) => {
+                    normalizedHeaders[k.toLowerCase()] = v;
+                });
+            } else {
+                Object.entries(request.headers as Record<string, string>).forEach(([k, v]) => {
+                    if (k) normalizedHeaders[k.toLowerCase()] = String(v);
+                });
+            }
+        }
+    } catch (err) {
+        // fallback: ignore and continue
+    }
+
+    // Ensure a User-Agent header exists
+    if (!normalizedHeaders['user-agent']) {
+        normalizedHeaders['user-agent'] = `ScratchAPI/${pkg.version}`;
+    }
+
     const response = await fetch(request.url, {
         method: request.method,
-        headers: {
-            'User-Agent': request.headers['user-agent'] || `ScratchAPI/${pkg.version}`
-        }
+        headers: normalizedHeaders,
     });
 
     const body = await getResponseBody(response);

@@ -7,9 +7,11 @@ import { useTranslation } from 'react-i18next';
 interface RequestSettingsProps {
     url: string;
     onUrlChange: (url: string) => void;
+    headers: { id: string; key: string; value: string }[];
+    onHeadersChange: (headers: { id: string; key: string; value: string }[]) => void;
 }
 
-export default function RequestSettings({ url, onUrlChange }: RequestSettingsProps) {
+export default function RequestSettings({ url, onUrlChange, headers, onHeadersChange }: RequestSettingsProps) {
     const { t } = useTranslation();
 
     return (
@@ -21,7 +23,7 @@ export default function RequestSettings({ url, onUrlChange }: RequestSettingsPro
                     <TabsTrigger value="body">Body</TabsTrigger>
                 </TabsList>
                 <RequestParams url={url} onUrlChange={onUrlChange} />
-                <RequestHeaders />
+                <RequestHeaders headers={headers} onChange={onHeadersChange} />
                 <RequestBody />
             </Tabs>
         </div>

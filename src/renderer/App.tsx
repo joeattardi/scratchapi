@@ -9,18 +9,33 @@ import {
     ResizablePanelGroup,
 } from "@/components/ui/resizable"
 
+interface HeaderEntry {
+    id: string;
+    key: string;
+    value: string;
+}
+
 export default function App() {
     const [response, setResponse] = useState<HttpResponse | null>(null);
     const [isLoading, setLoading] = useState(false);
     const [url, setUrl] = useState<string>('https://postman-echo.com/get');
     const [method, setMethod] = useState<HttpMethod>('GET');
+    const [headers, setHeaders] = useState<HeaderEntry[]>([{ id: crypto.randomUUID(), key: '', value: '' }]);
 
     async function onClickSend() {
         setLoading(true);
         setResponse(null);
+        // Build headers object, lowercasing header names and skipping empty keys
+        const headersObj: Record<string, string> = {};
+        headers.forEach(h => {
+            if (h.key.trim()) {
+                headersObj[h.key.trim().toLowerCase()] = h.value;
+            }
+        });
+
         const response = await window.electronAPI.sendRequest({
             method,
-            headers: {},
+            headers: headersObj,
             url
         });
 
@@ -41,7 +56,7 @@ export default function App() {
                             method={method}
                             onMethodChange={setMethod}
                         />
-                        <RequestSettings url={url} onUrlChange={setUrl} />
+                        <RequestSettings url={url} onUrlChange={setUrl} headers={headers} onHeadersChange={setHeaders} />
                     </section>
                 </ResizablePanel>
                 <ResizableHandle />

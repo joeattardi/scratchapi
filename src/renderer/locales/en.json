@@ -8,6 +8,12 @@
             "key": "Key",
             "value": "Value",
             "add": "Add Parameter"
+        },
+        "headers": {
+            "title": "Headers",
+            "key": "Key",
+            "value": "Value",
+            "add": "Add Header"
         }
     },
     "response": {
