@@ -12,8 +12,10 @@ import {
 export default function App() {
     const [response, setResponse] = useState<HttpResponse | null>(null);
     const [isLoading, setLoading] = useState(false);
+    const [url, setUrl] = useState<string>('https://jsonplaceholder.typicode.com/users');
+    const [method, setMethod] = useState<HttpMethod>('GET');
 
-    async function onClickSend({ method, url }: { method: HttpMethod; url: string }) {
+    async function onClickSend() {
         setLoading(true);
         setResponse(null);
         const response = await window.electronAPI.sendRequest({
@@ -30,8 +32,15 @@ export default function App() {
             <ResizablePanelGroup direction="horizontal">
                 <ResizablePanel defaultSize={50} minSize={20}>
                     <section className="flex flex-col gap-2 p-4">
-                        <RequestForm onSend={onClickSend} isLoading={isLoading} />
-                        <RequestSettings />
+                        <RequestForm 
+                            onSend={onClickSend} 
+                            isLoading={isLoading}
+                            url={url}
+                            onUrlChange={setUrl}
+                            method={method}
+                            onMethodChange={setMethod}
+                        />
+                        <RequestSettings url={url} onUrlChange={setUrl} />
                     </section>
                 </ResizablePanel>
                 <ResizableHandle />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,30 +19,114 @@ interface QueryParam {
     value: string;
 }
 
-export default function RequestParams() {
-    const { t } = useTranslation();
+interface RequestParamsProps {
+    url: string;
+    onUrlChange: (url: string) => void;
+}
 
-    const [params, setParams] = useState<QueryParam[]>([
-        { id: crypto.randomUUID(), key: '', value: '' },
-    ]);
+// Utility functions for URL parsing and serialization
+function parseQueryParams(url: string, existingParams?: QueryParam[]): QueryParam[] {
+    try {
+        const urlObj = new URL(url);
+        const params: QueryParam[] = [];
+        const existingParamsMap = new Map(existingParams?.map(p => [p.key, p]) ?? []);
+
+        urlObj.searchParams.forEach((value, key) => {
+            const existing = existingParamsMap.get(key);
+            params.push({
+                id: existing?.id ?? crypto.randomUUID(),
+                key,
+                value
+            });
+        });
+
+        // Always have at least one empty row
+        if (params.length === 0) {
+            params.push({ id: crypto.randomUUID(), key: '', value: '' });
+        }
+
+        return params;
+    } catch {
+        // If URL is invalid, return empty params
+        return [{ id: crypto.randomUUID(), key: '', value: '' }];
+    }
+}
+
+function buildUrlWithParams(baseUrl: string, params: QueryParam[]): string {
+    try {
+        const urlObj = new URL(baseUrl);
+
+        // Clear existing query params
+        urlObj.search = '';
+
+        // Add new params (only if they have a key)
+        params.forEach(param => {
+            if (param.key.trim()) {
+                urlObj.searchParams.append(param.key, param.value);
+            }
+        });
+
+        return urlObj.toString();
+    } catch {
+        // If URL is invalid, return as-is
+        return baseUrl;
+    }
+}
+
+function getBaseUrl(url: string): string {
+    try {
+        const urlObj = new URL(url);
+        urlObj.search = '';
+        return urlObj.toString();
+    } catch {
+        return url;
+    }
+}
+
+export default function RequestParams({ url, onUrlChange }: RequestParamsProps) {
+    const { t } = useTranslation();
+    // Track the URL when we initiated an update to detect external changes
+    const [lastInternalUrl, setLastInternalUrl] = useState(url);
+    const [paramOverrides, setParamOverrides] = useState<QueryParam[] | null>(null);
+    
+    // Derive params: use overrides if we have them, otherwise parse from URL
+    const params = paramOverrides !== null ? paramOverrides : parseQueryParams(url);
+
+    // When the parent URL changes externally (not from our update), clear overrides
+    if (url !== lastInternalUrl && paramOverrides !== null) {
+        setParamOverrides(null);
+    }
+
+    const updateParamsAndUrl = useCallback((updatedParams: QueryParam[]) => {
+        // Store the updated params locally
+        setParamOverrides(updatedParams);
+        // Build and send the new URL
+        const newUrl = buildUrlWithParams(getBaseUrl(url), updatedParams);
+        setLastInternalUrl(newUrl);
+        onUrlChange(newUrl);
+    }, [url, onUrlChange]);
 
     const addParam = () => {
-        setParams([...params, { id: crypto.randomUUID(), key: '', value: '' }]);
+        updateParamsAndUrl([...params, { id: crypto.randomUUID(), key: '', value: '' }]);
     };
 
-    const updateParam = (id: string, field: 'key' | 'value', newValue: string) => {
-        setParams(params.map(param =>
+    const updateParam = useCallback((id: string, field: 'key' | 'value', newValue: string) => {
+        const updatedParams = params.map(param =>
             param.id === id ? { ...param, [field]: newValue } : param
-        ));
-    };
+        );
+        updateParamsAndUrl(updatedParams);
+    }, [params, updateParamsAndUrl]);
 
-    const deleteParam = (id: string) => {
-        if (params.length === 1) {
-            setParams([{ id: crypto.randomUUID(), key: '', value: '' }]);
-        } else {
-            setParams(params.filter(param => param.id !== id));
+    const deleteParam = useCallback((id: string) => {
+        let updatedParams = params.filter(param => param.id !== id);
+
+        // Always have at least one empty row
+        if (updatedParams.length === 0) {
+            updatedParams = [{ id: crypto.randomUUID(), key: '', value: '' }];
         }
-    };
+
+        updateParamsAndUrl(updatedParams);
+    }, [params, updateParamsAndUrl]);
 
     return (
         <TabsContent value="params">

@@ -4,7 +4,12 @@ import RequestHeaders from './RequestHeaders';
 import RequestParams from './RequestParams';
 import { useTranslation } from 'react-i18next';
 
-export default function RequestSettings() {
+interface RequestSettingsProps {
+    url: string;
+    onUrlChange: (url: string) => void;
+}
+
+export default function RequestSettings({ url, onUrlChange }: RequestSettingsProps) {
     const { t } = useTranslation();
 
     return (
@@ -15,7 +20,7 @@ export default function RequestSettings() {
                     <TabsTrigger value="headers">Headers</TabsTrigger>
                     <TabsTrigger value="body">Body</TabsTrigger>
                 </TabsList>
-                <RequestParams />
+                <RequestParams url={url} onUrlChange={onUrlChange} />
                 <RequestHeaders />
                 <RequestBody />
             </Tabs>
