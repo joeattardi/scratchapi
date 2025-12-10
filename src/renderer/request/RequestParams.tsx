@@ -145,7 +145,7 @@ export default function RequestParams({ url, onUrlChange }: RequestParamsProps) 
                     <TableHeader>
                         <TableRow>
                             <TableHead className="w-12"></TableHead>
-                            <TableHead>{t('request.params.key')}</TableHead>
+                            <TableHead className="w-64">{t('request.params.key')}</TableHead>
                             <TableHead>{t('request.params.value')}</TableHead>
                             <TableHead className="w-16"></TableHead>
                         </TableRow>

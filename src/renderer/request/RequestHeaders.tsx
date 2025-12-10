@@ -53,7 +53,7 @@ export default function RequestHeaders({ headers, onChange }: RequestHeadersProp
                     <TableHeader>
                         <TableRow>
                             <TableHead className="w-12"></TableHead>
-                            <TableHead>{t('request.headers.key')}</TableHead>
+                            <TableHead className="w-64">{t('request.headers.key')}</TableHead>
                             <TableHead>{t('request.headers.value')}</TableHead>
                             <TableHead className="w-16"></TableHead>
                         </TableRow>
