@@ -2,6 +2,7 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 
 
 export interface HttpRequest {
     method: HttpMethod;
+    headers: HeadersInit;
     url: string;
 }
 

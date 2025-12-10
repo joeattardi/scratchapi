@@ -4,7 +4,7 @@
         "send": "Send",
         "method": "Method",
         "params": {
-            "title": "Query Parameters",
+            "title": "Params",
             "key": "Key",
             "value": "Value",
             "add": "Add Parameter"

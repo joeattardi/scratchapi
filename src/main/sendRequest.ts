@@ -1,5 +1,6 @@
 import { type IpcMainInvokeEvent } from 'electron';
 import type { HttpRequest, HttpResponse } from '../shared/types';
+import pkg from '../../package.json';
 
 async function getResponseBody(response: Response) {
     const rawBody = await response.text();
@@ -13,7 +14,10 @@ async function getResponseBody(response: Response) {
 export async function sendRequest(_event: IpcMainInvokeEvent, request: HttpRequest): Promise<HttpResponse> {
     const startTime = Date.now();
     const response = await fetch(request.url, {
-        method: request.method
+        method: request.method,
+        headers: {
+            'User-Agent': request.headers['user-agent'] || `ScratchAPI/${pkg.version}`
+        }
     });
 
     const body = await getResponseBody(response);

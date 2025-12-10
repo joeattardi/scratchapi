@@ -12,7 +12,7 @@ import {
 export default function App() {
     const [response, setResponse] = useState<HttpResponse | null>(null);
     const [isLoading, setLoading] = useState(false);
-    const [url, setUrl] = useState<string>('https://jsonplaceholder.typicode.com/users');
+    const [url, setUrl] = useState<string>('https://postman-echo.com/get');
     const [method, setMethod] = useState<HttpMethod>('GET');
 
     async function onClickSend() {
@@ -20,6 +20,7 @@ export default function App() {
         setResponse(null);
         const response = await window.electronAPI.sendRequest({
             method,
+            headers: {},
             url
         });
 
