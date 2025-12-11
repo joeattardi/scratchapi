@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/card';
 import { HttpResponse } from '../../shared/types';
 import { CookieIcon } from '@phosphor-icons/react';
+import { useTranslation } from 'react-i18next';
 
 interface ResponseCookiesProps {
     response: HttpResponse;
@@ -72,6 +73,7 @@ function parseCookies(headers: Record<string, string>): ParsedCookie[] {
 }
 
 export default function ResponseCookies({ response }: ResponseCookiesProps) {
+    const { t } = useTranslation();
     const cookies = parseCookies(response.headers);
 
     return (
@@ -90,7 +92,7 @@ export default function ResponseCookies({ response }: ResponseCookiesProps) {
                                     </CardHeader>
                                     <CardContent className="space-y-2">
                                         <div>
-                                            <div className="text-xs font-medium text-zinc-500 mb-1">Value</div>
+                                            <div className="text-xs font-medium text-zinc-500 mb-1">{t('cookies.value')}</div>
                                             <div className="font-mono text-sm text-zinc-700 break-words">
                                                 {cookie.value}
                                             </div>
@@ -99,13 +101,13 @@ export default function ResponseCookies({ response }: ResponseCookiesProps) {
                                         <div className="grid grid-cols-2 gap-4 pt-2">
                                             {cookie.domain && (
                                                 <div>
-                                                    <div className="text-xs font-medium text-zinc-500 mb-1">Domain</div>
+                                                    <div className="text-xs font-medium text-zinc-500 mb-1">{t('cookies.domain')}</div>
                                                     <div className="text-sm text-zinc-700">{cookie.domain}</div>
                                                 </div>
                                             )}
                                             {cookie.path && (
                                                 <div>
-                                                    <div className="text-xs font-medium text-zinc-500 mb-1">Path</div>
+                                                    <div className="text-xs font-medium text-zinc-500 mb-1">{t('cookies.path')}</div>
                                                     <div className="text-sm text-zinc-700">{cookie.path}</div>
                                                 </div>
                                             )}
@@ -113,7 +115,7 @@ export default function ResponseCookies({ response }: ResponseCookiesProps) {
 
                                         {cookie.expires && (
                                             <div className="pt-1">
-                                                <div className="text-xs font-medium text-zinc-500 mb-1">Expiration</div>
+                                                <div className="text-xs font-medium text-zinc-500 mb-1">{t('cookies.expires')}</div>
                                                 <div className="text-sm text-zinc-700 break-words">{cookie.expires}</div>
                                             </div>
                                         )}
@@ -122,13 +124,13 @@ export default function ResponseCookies({ response }: ResponseCookiesProps) {
                                             {cookie.httpOnly && (
                                                 <div className="flex items-center gap-1.5 text-sm">
                                                     <span className="text-green-600 font-semibold">✓</span>
-                                                    <span className="text-zinc-600">HttpOnly</span>
+                                                    <span className="text-zinc-600">{t('cookies.httpOnly')}</span>
                                                 </div>
                                             )}
                                             {cookie.secure && (
                                                 <div className="flex items-center gap-1.5 text-sm">
                                                     <span className="text-green-600 font-semibold">✓</span>
-                                                    <span className="text-zinc-600">Secure</span>
+                                                    <span className="text-zinc-600">{t('cookies.secure')}</span>
                                                 </div>
                                             )}
                                         </div>
@@ -139,7 +141,7 @@ export default function ResponseCookies({ response }: ResponseCookiesProps) {
                     </div>
                 ) : (
                     <div className="flex items-center justify-center h-full p-8 text-zinc-400 text-sm">
-                        No cookies in response
+                        {t('cookies.empty')}
                     </div>
                 )}
             </div>

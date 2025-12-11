@@ -8,6 +8,8 @@ import {
     ResizablePanel,
     ResizablePanelGroup,
 } from "@/components/ui/resizable"
+import { DownloadIcon, UploadIcon } from '@phosphor-icons/react';
+import { useTranslation } from 'react-i18next';
 
 interface HeaderEntry {
     id: string;
@@ -17,6 +19,7 @@ interface HeaderEntry {
 }
 
 export default function App() {
+    const { t } = useTranslation();
     const [response, setResponse] = useState<HttpResponse | null>(null);
     const [isLoading, setLoading] = useState(false);
     const [url, setUrl] = useState<string>('https://postman-echo.com/get');
@@ -49,6 +52,7 @@ export default function App() {
             <ResizablePanelGroup direction="horizontal">
                 <ResizablePanel defaultSize={50} minSize={20} className="h-full min-h-0">
                     <section className="h-full min-h-0 flex flex-col gap-2 p-4">
+                        <h2 className="text-xs uppercase flex items-center gap-1 text-zinc-500"><UploadIcon size={16} /> {t('request.title')}</h2>
                         <RequestForm 
                             onSend={onClickSend} 
                             isLoading={isLoading}
@@ -63,6 +67,7 @@ export default function App() {
                 <ResizableHandle />
                 <ResizablePanel defaultSize={50} minSize={20} className="h-full min-h-0">
                     <section className="h-full min-h-0 flex flex-col gap-2 flex-1 p-4">
+                        <h2 className="text-xs uppercase flex items-center gap-1 text-zinc-500"><DownloadIcon size={16} /> {t('response.title')}</h2>
                         <div className="flex-1 min-h-0 flex flex-col">
                             <ResponseView response={response} isLoading={isLoading} />
                         </div>

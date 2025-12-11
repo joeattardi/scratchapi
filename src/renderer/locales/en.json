@@ -1,5 +1,22 @@
 {
+    "cookies": {
+        "title": "Cookies",
+        "value": "Value",
+        "domain": "Domain",
+        "path": "Path",
+        "expires": "Expires",
+        "httpOnly": "HttpOnly",
+        "secure": "Secure",
+        "empty": "No cookies found in the response."
+    },
+    "headers": {
+        "title": "Headers",
+        "name": "Name",
+        "value": "Value",
+        "empty": "No headers found in the response."
+    },
     "request": {
+        "title": "Request",
         "enterUrl": "Enter URL",
         "send": "Send",
         "method": "Method",
@@ -17,6 +34,7 @@
         }
     },
     "response": {
+        "title": "Response",
         "empty": "No response yet. Send a request to see the response here."
     },
     "http": {

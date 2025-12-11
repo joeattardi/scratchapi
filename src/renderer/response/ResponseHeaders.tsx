@@ -9,12 +9,14 @@ import {
 } from '@/components/ui/table';
 import { HttpResponse } from '../../shared/types';
 import { TagIcon } from '@phosphor-icons/react';
+import { useTranslation } from 'react-i18next';
 
 interface ResponseHeadersProps {
     response: HttpResponse;
 }
 
 export default function ResponseHeaders({ response }: ResponseHeadersProps) {
+    const { t } = useTranslation();
     const headerEntries = Object.entries(response.headers);
 
     return (
@@ -25,8 +27,8 @@ export default function ResponseHeaders({ response }: ResponseHeadersProps) {
                         <Table className="table-fixed w-full">
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-1/3 font-semibold">Name</TableHead>
-                                    <TableHead className="w-2/3 font-semibold">Value</TableHead>
+                                    <TableHead className="w-1/3 font-semibold">{t('headers.name')}</TableHead>
+                                    <TableHead className="w-2/3 font-semibold">{t('headers.value')}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -46,7 +48,7 @@ export default function ResponseHeaders({ response }: ResponseHeadersProps) {
                     </div>
                 ) : (
                     <div className="flex items-center justify-center h-full p-8 text-zinc-400 text-sm">
-                        No headers in response
+                        {t('headers.empty')}
                     </div>
                 )}
             </div>

@@ -4,6 +4,7 @@ import { HttpResponse } from '../../shared/types';
 import ResponseBody from './ResponseBody';
 import ResponseHeaders from './ResponseHeaders';
 import ResponseCookies from './ResponseCookies';
+import { useTranslation } from 'react-i18next';
 
 interface ResponseTabsProps {
     response: HttpResponse;
@@ -18,6 +19,8 @@ function countCookies(headers: Record<string, string>): number {
 }
 
 export default function ResponseTabs({ response }: ResponseTabsProps) {
+    const { t } = useTranslation();
+
     const headersCount = Object.keys(response.headers).length;
     const cookiesCount = countCookies(response.headers);
     return (
@@ -31,7 +34,7 @@ export default function ResponseTabs({ response }: ResponseTabsProps) {
                     </Badge>
                 </TabsTrigger>
                 <TabsTrigger value="cookies">
-                    Cookies
+                    {t('cookies.title')}
                     <Badge variant="secondary" className="ml-2 text-[10px] px-1.5 py-0 bg-zinc-600 text-white">
                         {cookiesCount}
                     </Badge>
