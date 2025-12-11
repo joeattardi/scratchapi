@@ -6,6 +6,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { HttpResponse } from '../../shared/types';
+import { CookieIcon } from '@phosphor-icons/react';
 
 interface ResponseCookiesProps {
     response: HttpResponse;
@@ -82,7 +83,10 @@ export default function ResponseCookies({ response }: ResponseCookiesProps) {
                             {cookies.map((cookie, index) => (
                                 <Card key={`${cookie.name}-${index}`} className="shadow-sm">
                                     <CardHeader>
-                                        <CardTitle className="text-base">{cookie.name}</CardTitle>
+                                        <CardTitle className="text-base flex items-center gap-2">
+                                            <CookieIcon size={24} />
+                                            <span>{cookie.name}</span>
+                                        </CardTitle>
                                     </CardHeader>
                                     <CardContent className="space-y-2">
                                         <div>
