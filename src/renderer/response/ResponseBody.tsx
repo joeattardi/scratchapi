@@ -21,7 +21,9 @@ function isJsonString(str: string): boolean {
 
 export default function ResponseBody({ response }: ResponseBodyProps) {
     const isJson = isJsonString(response.body);
-    const formattedBody = isJson ? JSON.stringify(JSON.parse(response.body), null, 2) : response.body;
+    const formattedBody = isJson
+        ? JSON.stringify(JSON.parse(response.body), null, 2)
+        : response.body;
 
     return (
         <TabsContent value="body">
@@ -43,7 +45,9 @@ export default function ResponseBody({ response }: ResponseBodyProps) {
                         {formattedBody}
                     </SyntaxHighlighter>
                 ) : (
-                    <pre className="overflow-auto flex-1 min-h-0 whitespace-pre-wrap wrap-break-word text-sm">{response.body}</pre>
+                    <pre className="overflow-auto flex-1 min-h-0 whitespace-pre-wrap wrap-break-word text-sm">
+                        {response.body}
+                    </pre>
                 )}
             </div>
         </TabsContent>

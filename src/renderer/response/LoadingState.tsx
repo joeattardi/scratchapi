@@ -5,5 +5,5 @@ export default function LoadingState() {
         <div className="flex flex-col items-center p-4 grow mt-8">
             <SpinnerBallIcon size={150} weight="duotone" className="animate-spin text-zinc-300" />
         </div>
-    )
+    );
 }

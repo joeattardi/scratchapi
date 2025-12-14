@@ -9,7 +9,7 @@ import {
     TableCell,
     TableHead,
     TableHeader,
-    TableRow,
+    TableRow
 } from '@/components/ui/table';
 import { XIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +31,7 @@ function parseQueryParams(url: string, existingParams?: QueryParam[]): QueryPara
     try {
         const urlObj = new URL(url);
         const params: QueryParam[] = [];
-        const existingParamsMap = new Map(existingParams?.map(p => [p.key, p]) ?? []);
+        const existingParamsMap = new Map(existingParams?.map((p) => [p.key, p]) ?? []);
 
         urlObj.searchParams.forEach((value, key) => {
             const existing = existingParamsMap.get(key);
@@ -63,7 +63,7 @@ function buildUrlWithParams(baseUrl: string, params: QueryParam[]): string {
         urlObj.search = '';
 
         // Add new params (only if they have a key and are enabled)
-        params.forEach(param => {
+        params.forEach((param) => {
             if (param.key.trim() && param.enabled !== false) {
                 urlObj.searchParams.append(param.key, param.value);
             }
@@ -91,7 +91,7 @@ export default function RequestParams({ url, onUrlChange }: RequestParamsProps) 
     // Track the URL when we initiated an update to detect external changes
     const [lastInternalUrl, setLastInternalUrl] = useState(url);
     const [paramOverrides, setParamOverrides] = useState<QueryParam[] | null>(null);
-    
+
     // Derive params: use overrides if we have them, otherwise parse from URL
     const params = paramOverrides !== null ? paramOverrides : parseQueryParams(url);
 
@@ -100,43 +100,58 @@ export default function RequestParams({ url, onUrlChange }: RequestParamsProps) 
         setParamOverrides(null);
     }
 
-    const updateParamsAndUrl = useCallback((updatedParams: QueryParam[]) => {
-        // Store the updated params locally
-        setParamOverrides(updatedParams);
-        // Build and send the new URL
-        const newUrl = buildUrlWithParams(getBaseUrl(url), updatedParams);
-        setLastInternalUrl(newUrl);
-        onUrlChange(newUrl);
-    }, [url, onUrlChange]);
+    const updateParamsAndUrl = useCallback(
+        (updatedParams: QueryParam[]) => {
+            // Store the updated params locally
+            setParamOverrides(updatedParams);
+            // Build and send the new URL
+            const newUrl = buildUrlWithParams(getBaseUrl(url), updatedParams);
+            setLastInternalUrl(newUrl);
+            onUrlChange(newUrl);
+        },
+        [url, onUrlChange]
+    );
 
     const addParam = () => {
-        updateParamsAndUrl([...params, { id: crypto.randomUUID(), key: '', value: '', enabled: true }]);
+        updateParamsAndUrl([
+            ...params,
+            { id: crypto.randomUUID(), key: '', value: '', enabled: true }
+        ]);
     };
 
-    const updateParam = useCallback((id: string, field: 'key' | 'value', newValue: string) => {
-        const updatedParams = params.map(param =>
-            param.id === id ? { ...param, [field]: newValue } : param
-        );
-        updateParamsAndUrl(updatedParams);
-    }, [params, updateParamsAndUrl]);
+    const updateParam = useCallback(
+        (id: string, field: 'key' | 'value', newValue: string) => {
+            const updatedParams = params.map((param) =>
+                param.id === id ? { ...param, [field]: newValue } : param
+            );
+            updateParamsAndUrl(updatedParams);
+        },
+        [params, updateParamsAndUrl]
+    );
 
-    const toggleParam = useCallback((id: string) => {
-        const updatedParams = params.map(param =>
-            param.id === id ? { ...param, enabled: !param.enabled } : param
-        );
-        updateParamsAndUrl(updatedParams);
-    }, [params, updateParamsAndUrl]);
+    const toggleParam = useCallback(
+        (id: string) => {
+            const updatedParams = params.map((param) =>
+                param.id === id ? { ...param, enabled: !param.enabled } : param
+            );
+            updateParamsAndUrl(updatedParams);
+        },
+        [params, updateParamsAndUrl]
+    );
 
-    const deleteParam = useCallback((id: string) => {
-        let updatedParams = params.filter(param => param.id !== id);
+    const deleteParam = useCallback(
+        (id: string) => {
+            let updatedParams = params.filter((param) => param.id !== id);
 
-        // Always have at least one empty row
-        if (updatedParams.length === 0) {
-            updatedParams = [{ id: crypto.randomUUID(), key: '', value: '', enabled: true }];
-        }
+            // Always have at least one empty row
+            if (updatedParams.length === 0) {
+                updatedParams = [{ id: crypto.randomUUID(), key: '', value: '', enabled: true }];
+            }
 
-        updateParamsAndUrl(updatedParams);
-    }, [params, updateParamsAndUrl]);
+            updateParamsAndUrl(updatedParams);
+        },
+        [params, updateParamsAndUrl]
+    );
 
     return (
         <TabsContent value="params">
@@ -166,7 +181,9 @@ export default function RequestParams({ url, onUrlChange }: RequestParamsProps) 
                                             type="text"
                                             placeholder={t('request.params.key')}
                                             value={param.key}
-                                            onChange={(e) => updateParam(param.id, 'key', e.target.value)}
+                                            onChange={(e) =>
+                                                updateParam(param.id, 'key', e.target.value)
+                                            }
                                         />
                                     </TableCell>
                                     <TableCell className={isEnabled ? '' : 'opacity-40'}>
@@ -174,7 +191,9 @@ export default function RequestParams({ url, onUrlChange }: RequestParamsProps) 
                                             type="text"
                                             placeholder={t('request.params.value')}
                                             value={param.value}
-                                            onChange={(e) => updateParam(param.id, 'value', e.target.value)}
+                                            onChange={(e) =>
+                                                updateParam(param.id, 'value', e.target.value)
+                                            }
                                         />
                                     </TableCell>
                                     <TableCell className={isEnabled ? '' : 'opacity-40'}>

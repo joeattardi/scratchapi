@@ -9,5 +9,5 @@ export default function EmptyState() {
             <UploadIcon weight="light" className="w-32 h-32 grayscale opacity-25" />
             <span>{t('response.empty')}</span>
         </div>
-    )
+    );
 }

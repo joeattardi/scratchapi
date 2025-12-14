@@ -1,10 +1,5 @@
 import { TabsContent } from '@/components/ui/tabs';
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { HttpResponse } from '../../shared/types';
 import { CookieIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
@@ -33,20 +28,20 @@ function parseCookies(headers: Record<string, string>): ParsedCookie[] {
     // Set-Cookie can be a single string or multiple cookies separated by newlines
     const cookieStrings = setCookieHeader.split('\n').filter(Boolean);
 
-    return cookieStrings.map(cookieString => {
-        const parts = cookieString.split(';').map(p => p.trim());
+    return cookieStrings.map((cookieString) => {
+        const parts = cookieString.split(';').map((p) => p.trim());
         const [nameValue, ...attributes] = parts;
-        const [name, value] = nameValue.split('=').map(p => p.trim());
+        const [name, value] = nameValue.split('=').map((p) => p.trim());
 
         const cookie: ParsedCookie = {
             name: name || '',
             value: value || '',
             httpOnly: false,
-            secure: false,
+            secure: false
         };
 
-        attributes.forEach(attr => {
-            const [key, val] = attr.split('=').map(p => p.trim());
+        attributes.forEach((attr) => {
+            const [key, val] = attr.split('=').map((p) => p.trim());
             const lowerKey = key.toLowerCase();
 
             if (lowerKey === 'domain') {
@@ -92,7 +87,9 @@ export default function ResponseCookies({ response }: ResponseCookiesProps) {
                                     </CardHeader>
                                     <CardContent className="space-y-2">
                                         <div>
-                                            <div className="text-xs font-medium text-zinc-500 mb-1">{t('cookies.value')}</div>
+                                            <div className="text-xs font-medium text-zinc-500 mb-1">
+                                                {t('cookies.value')}
+                                            </div>
                                             <div className="font-mono text-sm text-zinc-700 break-words">
                                                 {cookie.value}
                                             </div>
@@ -101,36 +98,56 @@ export default function ResponseCookies({ response }: ResponseCookiesProps) {
                                         <div className="grid grid-cols-2 gap-4 pt-2">
                                             {cookie.domain && (
                                                 <div>
-                                                    <div className="text-xs font-medium text-zinc-500 mb-1">{t('cookies.domain')}</div>
-                                                    <div className="text-sm text-zinc-700">{cookie.domain}</div>
+                                                    <div className="text-xs font-medium text-zinc-500 mb-1">
+                                                        {t('cookies.domain')}
+                                                    </div>
+                                                    <div className="text-sm text-zinc-700">
+                                                        {cookie.domain}
+                                                    </div>
                                                 </div>
                                             )}
                                             {cookie.path && (
                                                 <div>
-                                                    <div className="text-xs font-medium text-zinc-500 mb-1">{t('cookies.path')}</div>
-                                                    <div className="text-sm text-zinc-700">{cookie.path}</div>
+                                                    <div className="text-xs font-medium text-zinc-500 mb-1">
+                                                        {t('cookies.path')}
+                                                    </div>
+                                                    <div className="text-sm text-zinc-700">
+                                                        {cookie.path}
+                                                    </div>
                                                 </div>
                                             )}
                                         </div>
 
                                         {cookie.expires && (
                                             <div className="pt-1">
-                                                <div className="text-xs font-medium text-zinc-500 mb-1">{t('cookies.expires')}</div>
-                                                <div className="text-sm text-zinc-700 break-words">{cookie.expires}</div>
+                                                <div className="text-xs font-medium text-zinc-500 mb-1">
+                                                    {t('cookies.expires')}
+                                                </div>
+                                                <div className="text-sm text-zinc-700 break-words">
+                                                    {cookie.expires}
+                                                </div>
                                             </div>
                                         )}
 
                                         <div className="flex gap-4 pt-2">
                                             {cookie.httpOnly && (
                                                 <div className="flex items-center gap-1.5 text-sm">
-                                                    <span className="text-green-600 font-semibold">✓</span>
-                                                    <span className="text-zinc-600">{t('cookies.httpOnly')}</span>
+                                                    <span className="text-green-600 font-semibold">
+                                                        ✓
+                                                    </span>
+                                                    <span className="text-zinc-600">
+                                                        {t('cookies.httpOnly')}
+                                                    </span>
                                                 </div>
                                             )}
                                             {cookie.secure && (
                                                 <div className="flex items-center gap-1.5 text-sm">
-                                                    <span className="text-green-600 font-semibold">✓</span>
-                                                    <span className="text-zinc-600">{t('cookies.secure')}</span>
+                                                    <span className="text-green-600 font-semibold">
+                                                        ✓
+                                                    </span>
+                                                    <span className="text-zinc-600">
+                                                        {t('cookies.secure')}
+                                                    </span>
                                                 </div>
                                             )}
                                         </div>

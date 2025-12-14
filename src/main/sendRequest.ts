@@ -11,7 +11,10 @@ async function getResponseBody(response: Response) {
     }
 }
 
-export async function sendRequest(_event: IpcMainInvokeEvent, request: HttpRequest): Promise<HttpResponse> {
+export async function sendRequest(
+    _event: IpcMainInvokeEvent,
+    request: HttpRequest
+): Promise<HttpResponse> {
     const startTime = Date.now();
     // Normalize incoming headers (HeadersInit can be various shapes). Build a simple map with lowercase keys.
     const normalizedHeaders: Record<string, string> = {};
@@ -43,17 +46,16 @@ export async function sendRequest(_event: IpcMainInvokeEvent, request: HttpReque
     const response = await fetch(request.url, {
         method: request.method,
         headers: normalizedHeaders,
-        body: request.body,
+        body: request.body
     });
 
     const body = await getResponseBody(response);
-    
+
     // Convert the response headers to a mapping of string to string
     const headers: Record<string, string> = {};
     response.headers.forEach((value, key) => {
         headers[key] = value;
     });
-
 
     return {
         status: response.status,

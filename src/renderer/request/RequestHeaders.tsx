@@ -9,7 +9,7 @@ import {
     TableCell,
     TableHead,
     TableHeader,
-    TableRow,
+    TableRow
 } from '@/components/ui/table';
 import { XIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
@@ -33,18 +33,31 @@ export default function RequestHeaders({ headers, onChange }: RequestHeadersProp
         onChange([...headers, { id: crypto.randomUUID(), key: '', value: '', enabled: true }]);
     }, [headers, onChange]);
 
-    const updateHeader = useCallback((id: string, field: 'key' | 'value', newValue: string) => {
-        onChange(headers.map(h => h.id === id ? { ...h, [field]: newValue } : h));
-    }, [headers, onChange]);
+    const updateHeader = useCallback(
+        (id: string, field: 'key' | 'value', newValue: string) => {
+            onChange(headers.map((h) => (h.id === id ? { ...h, [field]: newValue } : h)));
+        },
+        [headers, onChange]
+    );
 
-    const toggleHeader = useCallback((id: string) => {
-        onChange(headers.map(h => h.id === id ? { ...h, enabled: !h.enabled } : h));
-    }, [headers, onChange]);
+    const toggleHeader = useCallback(
+        (id: string) => {
+            onChange(headers.map((h) => (h.id === id ? { ...h, enabled: !h.enabled } : h)));
+        },
+        [headers, onChange]
+    );
 
-    const deleteHeader = useCallback((id: string) => {
-        const next = headers.filter(h => h.id !== id);
-        onChange(next.length ? next : [{ id: crypto.randomUUID(), key: '', value: '', enabled: true }]);
-    }, [headers, onChange]);
+    const deleteHeader = useCallback(
+        (id: string) => {
+            const next = headers.filter((h) => h.id !== id);
+            onChange(
+                next.length
+                    ? next
+                    : [{ id: crypto.randomUUID(), key: '', value: '', enabled: true }]
+            );
+        },
+        [headers, onChange]
+    );
 
     return (
         <TabsContent value="headers">
@@ -74,7 +87,9 @@ export default function RequestHeaders({ headers, onChange }: RequestHeadersProp
                                             type="text"
                                             placeholder={t('request.headers.key')}
                                             value={h.key}
-                                            onChange={(e) => updateHeader(h.id, 'key', e.target.value)}
+                                            onChange={(e) =>
+                                                updateHeader(h.id, 'key', e.target.value)
+                                            }
                                         />
                                     </TableCell>
                                     <TableCell className={isEnabled ? '' : 'opacity-40'}>
@@ -82,7 +97,9 @@ export default function RequestHeaders({ headers, onChange }: RequestHeadersProp
                                             type="text"
                                             placeholder={t('request.headers.value')}
                                             value={h.value}
-                                            onChange={(e) => updateHeader(h.id, 'value', e.target.value)}
+                                            onChange={(e) =>
+                                                updateHeader(h.id, 'value', e.target.value)
+                                            }
                                         />
                                     </TableCell>
                                     <TableCell className={isEnabled ? '' : 'opacity-40'}>

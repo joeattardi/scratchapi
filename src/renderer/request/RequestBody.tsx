@@ -2,7 +2,13 @@ import { useState, useEffect } from 'react';
 import { TabsContent } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from '@/components/ui/select';
 import { useTranslation } from 'react-i18next';
 import type { HttpMethod } from 'src/shared/types';
 
@@ -10,7 +16,9 @@ interface RequestBodyProps {
     body: string;
     onChange: (body: string) => void;
     headers: { id: string; key: string; value: string; enabled?: boolean }[];
-    onHeadersChange: (headers: { id: string; key: string; value: string; enabled?: boolean }[]) => void;
+    onHeadersChange: (
+        headers: { id: string; key: string; value: string; enabled?: boolean }[]
+    ) => void;
     method: HttpMethod;
 }
 
@@ -20,17 +28,23 @@ const CONTENT_TYPE_MAP: Record<BodyType, string> = {
     json: 'application/json',
     text: 'text/plain',
     xml: 'application/xml',
-    html: 'text/html',
+    html: 'text/html'
 };
 
-export default function RequestBody({ body, onChange, headers, onHeadersChange, method }: RequestBodyProps) {
+export default function RequestBody({
+    body,
+    onChange,
+    headers,
+    onHeadersChange,
+    method
+}: RequestBodyProps) {
     const { t } = useTranslation();
 
     const isBodyDisabled = method === 'GET' || method === 'HEAD';
 
     // Derive bodyType from headers instead of managing it as state
     const getBodyTypeFromHeaders = (): BodyType => {
-        const contentTypeHeader = headers.find(h => h.key.toLowerCase() === 'content-type');
+        const contentTypeHeader = headers.find((h) => h.key.toLowerCase() === 'content-type');
         if (contentTypeHeader) {
             const value = contentTypeHeader.value.toLowerCase();
             if (value.includes('application/json')) return 'json';
@@ -45,7 +59,7 @@ export default function RequestBody({ body, onChange, headers, onHeadersChange, 
 
     // Manage Content-Type header based on body content
     useEffect(() => {
-        const contentTypeIndex = headers.findIndex(h => h.key.toLowerCase() === 'content-type');
+        const contentTypeIndex = headers.findIndex((h) => h.key.toLowerCase() === 'content-type');
 
         if (!body.trim()) {
             // Remove Content-Type header when body is empty
@@ -55,12 +69,15 @@ export default function RequestBody({ body, onChange, headers, onHeadersChange, 
             }
         } else if (contentTypeIndex < 0 && !isBodyDisabled) {
             // Add Content-Type header when body has content and no header exists
-            const updatedHeaders = [...headers, {
-                id: crypto.randomUUID(),
-                key: 'Content-Type',
-                value: CONTENT_TYPE_MAP[bodyType],
-                enabled: true,
-            }];
+            const updatedHeaders = [
+                ...headers,
+                {
+                    id: crypto.randomUUID(),
+                    key: 'Content-Type',
+                    value: CONTENT_TYPE_MAP[bodyType],
+                    enabled: true
+                }
+            ];
             onHeadersChange(updatedHeaders);
         }
     }, [body, headers, onHeadersChange, bodyType, isBodyDisabled]);
@@ -74,7 +91,7 @@ export default function RequestBody({ body, onChange, headers, onHeadersChange, 
 
     const updateContentTypeHeader = (newBodyType: BodyType) => {
         // Find existing content-type header
-        const contentTypeIndex = headers.findIndex(h => h.key.toLowerCase() === 'content-type');
+        const contentTypeIndex = headers.findIndex((h) => h.key.toLowerCase() === 'content-type');
 
         if (contentTypeIndex >= 0) {
             // Update existing header
@@ -82,17 +99,20 @@ export default function RequestBody({ body, onChange, headers, onHeadersChange, 
             updatedHeaders[contentTypeIndex] = {
                 ...updatedHeaders[contentTypeIndex],
                 value: CONTENT_TYPE_MAP[newBodyType],
-                enabled: true,
+                enabled: true
             };
             onHeadersChange(updatedHeaders);
         } else {
             // Add new header
-            const updatedHeaders = [...headers, {
-                id: crypto.randomUUID(),
-                key: 'Content-Type',
-                value: CONTENT_TYPE_MAP[newBodyType],
-                enabled: true,
-            }];
+            const updatedHeaders = [
+                ...headers,
+                {
+                    id: crypto.randomUUID(),
+                    key: 'Content-Type',
+                    value: CONTENT_TYPE_MAP[newBodyType],
+                    enabled: true
+                }
+            ];
             onHeadersChange(updatedHeaders);
         }
     };
@@ -125,7 +145,10 @@ export default function RequestBody({ body, onChange, headers, onHeadersChange, 
                 ) : (
                     <>
                         <div className="flex gap-2 items-center">
-                            <Select value={bodyType} onValueChange={(v) => updateContentTypeHeader(v as BodyType)}>
+                            <Select
+                                value={bodyType}
+                                onValueChange={(v) => updateContentTypeHeader(v as BodyType)}
+                            >
                                 <SelectTrigger className="w-32">
                                     <SelectValue />
                                 </SelectTrigger>

@@ -14,7 +14,14 @@ interface RequestFormProps {
     onMethodChange: (method: HttpMethod) => void;
 }
 
-export default function RequestForm({ onSend, isLoading, url, onUrlChange, method, onMethodChange }: RequestFormProps) {
+export default function RequestForm({
+    onSend,
+    isLoading,
+    url,
+    onUrlChange,
+    method,
+    onMethodChange
+}: RequestFormProps) {
     const { t } = useTranslation();
 
     function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -32,7 +39,11 @@ export default function RequestForm({ onSend, isLoading, url, onUrlChange, metho
                 value={url}
                 onChange={(e) => onUrlChange(e.target.value)}
             />
-            <Button type="submit" disabled={!url || isLoading} className="rounded-tl-none rounded-bl-none">
+            <Button
+                type="submit"
+                disabled={!url || isLoading}
+                className="rounded-tl-none rounded-bl-none"
+            >
                 <PaperPlaneRightIcon />
                 {t('request.send')}
             </Button>

@@ -5,7 +5,7 @@ import {
     TableCell,
     TableHead,
     TableHeader,
-    TableRow,
+    TableRow
 } from '@/components/ui/table';
 import { HttpResponse } from '../../shared/types';
 import { TagIcon } from '@phosphor-icons/react';
@@ -27,8 +27,12 @@ export default function ResponseHeaders({ response }: ResponseHeadersProps) {
                         <Table className="table-fixed w-full">
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-1/3 font-semibold">{t('headers.name')}</TableHead>
-                                    <TableHead className="w-2/3 font-semibold">{t('headers.value')}</TableHead>
+                                    <TableHead className="w-1/3 font-semibold">
+                                        {t('headers.name')}
+                                    </TableHead>
+                                    <TableHead className="w-2/3 font-semibold">
+                                        {t('headers.value')}
+                                    </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>

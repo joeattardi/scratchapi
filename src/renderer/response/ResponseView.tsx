@@ -23,9 +23,7 @@ export default function ResponseView({ isLoading, response }: ResponseViewProps)
                     <ResponseStatus status={response.status} />
                     <Badge variant="secondary">{prettyMilliseconds(response.duration)}</Badge>
                 </div>
-                {response.body.length > 0 && (
-                    <ResponseTabs response={response} />
-                )}
+                {response.body.length > 0 && <ResponseTabs response={response} />}
             </div>
         );
     }

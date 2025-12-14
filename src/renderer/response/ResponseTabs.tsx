@@ -29,13 +29,19 @@ export default function ResponseTabs({ response }: ResponseTabsProps) {
                 <TabsTrigger value="body">Body</TabsTrigger>
                 <TabsTrigger value="headers">
                     Headers
-                    <Badge variant="secondary" className="ml-2 text-[10px] px-1.5 py-0 bg-zinc-600 text-white">
+                    <Badge
+                        variant="secondary"
+                        className="ml-2 text-[10px] px-1.5 py-0 bg-zinc-600 text-white"
+                    >
                         {headersCount}
                     </Badge>
                 </TabsTrigger>
                 <TabsTrigger value="cookies">
                     {t('cookies.title')}
-                    <Badge variant="secondary" className="ml-2 text-[10px] px-1.5 py-0 bg-zinc-600 text-white">
+                    <Badge
+                        variant="secondary"
+                        className="ml-2 text-[10px] px-1.5 py-0 bg-zinc-600 text-white"
+                    >
                         {cookiesCount}
                     </Badge>
                 </TabsTrigger>
@@ -44,5 +50,5 @@ export default function ResponseTabs({ response }: ResponseTabsProps) {
             <ResponseHeaders response={response} />
             <ResponseCookies response={response} />
         </Tabs>
-    )
+    );
 }
