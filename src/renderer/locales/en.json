@@ -31,6 +31,13 @@
             "key": "Key",
             "value": "Value",
             "add": "Add Header"
+        },
+        "body": {
+            "title": "Body",
+            "placeholder": "Enter request body (JSON, XML, plain text, etc.)",
+            "hint": "Set Content-Type header to specify the body format",
+            "format": "Format JSON",
+            "minify": "Minify JSON"
         }
     },
     "response": {

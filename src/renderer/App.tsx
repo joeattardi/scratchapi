@@ -25,6 +25,7 @@ export default function App() {
     const [url, setUrl] = useState<string>('https://postman-echo.com/get');
     const [method, setMethod] = useState<HttpMethod>('GET');
     const [headers, setHeaders] = useState<HeaderEntry[]>([{ id: crypto.randomUUID(), key: '', value: '' }]);
+    const [requestBody, setRequestBody] = useState<string>('');
 
     async function onClickSend() {
         setLoading(true);
@@ -40,7 +41,8 @@ export default function App() {
         const response = await window.electronAPI.sendRequest({
             method,
             headers: headersObj,
-            url
+            url,
+            body: requestBody.trim() ? requestBody : undefined
         });
 
         setResponse(response);
@@ -61,7 +63,7 @@ export default function App() {
                             method={method}
                             onMethodChange={setMethod}
                         />
-                        <RequestSettings url={url} onUrlChange={setUrl} headers={headers} onHeadersChange={setHeaders} />
+                        <RequestSettings url={url} onUrlChange={setUrl} headers={headers} onHeadersChange={setHeaders} body={requestBody} onBodyChange={setRequestBody} method={method} />
                     </section>
                 </ResizablePanel>
                 <ResizableHandle />

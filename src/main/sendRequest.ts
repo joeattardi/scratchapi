@@ -43,6 +43,7 @@ export async function sendRequest(_event: IpcMainInvokeEvent, request: HttpReque
     const response = await fetch(request.url, {
         method: request.method,
         headers: normalizedHeaders,
+        body: request.body,
     });
 
     const body = await getResponseBody(response);

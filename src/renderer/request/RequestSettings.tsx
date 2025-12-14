@@ -3,15 +3,19 @@ import RequestBody from './RequestBody';
 import RequestHeaders from './RequestHeaders';
 import RequestParams from './RequestParams';
 import { useTranslation } from 'react-i18next';
+import type { HttpMethod } from 'src/shared/types';
 
 interface RequestSettingsProps {
     url: string;
     onUrlChange: (url: string) => void;
-    headers: { id: string; key: string; value: string }[];
-    onHeadersChange: (headers: { id: string; key: string; value: string }[]) => void;
+    headers: { id: string; key: string; value: string; enabled?: boolean }[];
+    onHeadersChange: (headers: { id: string; key: string; value: string; enabled?: boolean }[]) => void;
+    body: string;
+    onBodyChange: (body: string) => void;
+    method: HttpMethod;
 }
 
-export default function RequestSettings({ url, onUrlChange, headers, onHeadersChange }: RequestSettingsProps) {
+export default function RequestSettings({ url, onUrlChange, headers, onHeadersChange, body, onBodyChange, method }: RequestSettingsProps) {
     const { t } = useTranslation();
 
     return (
@@ -24,7 +28,7 @@ export default function RequestSettings({ url, onUrlChange, headers, onHeadersCh
                 </TabsList>
                 <RequestParams url={url} onUrlChange={onUrlChange} />
                 <RequestHeaders headers={headers} onChange={onHeadersChange} />
-                <RequestBody />
+                <RequestBody body={body} onChange={onBodyChange} headers={headers} onHeadersChange={onHeadersChange} method={method} />
             </Tabs>
         </div>
     )

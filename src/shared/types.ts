@@ -4,6 +4,7 @@ export interface HttpRequest {
     method: HttpMethod;
     headers: HeadersInit;
     url: string;
+    body?: string;
 }
 
 export interface HttpResponse {
