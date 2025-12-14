@@ -25,35 +25,23 @@ const CONTENT_TYPE_MAP: Record<BodyType, string> = {
 
 export default function RequestBody({ body, onChange, headers, onHeadersChange, method }: RequestBodyProps) {
     const { t } = useTranslation();
-    const [bodyType, setBodyType] = useState<BodyType>('json');
 
     const isBodyDisabled = method === 'GET' || method === 'HEAD';
 
-    // Detect initial Content-Type from headers and set if missing (only when body has content)
-    useEffect(() => {
+    // Derive bodyType from headers instead of managing it as state
+    const getBodyTypeFromHeaders = (): BodyType => {
         const contentTypeHeader = headers.find(h => h.key.toLowerCase() === 'content-type');
         if (contentTypeHeader) {
             const value = contentTypeHeader.value.toLowerCase();
-            if (value.includes('application/json')) {
-                setBodyType('json');
-            } else if (value.includes('application/xml')) {
-                setBodyType('xml');
-            } else if (value.includes('text/html')) {
-                setBodyType('html');
-            } else if (value.includes('text/plain')) {
-                setBodyType('text');
-            }
-        } else if (body.trim()) {
-            // No Content-Type header exists and body has content, set the default (JSON)
-            const updatedHeaders = [...headers, {
-                id: crypto.randomUUID(),
-                key: 'Content-Type',
-                value: CONTENT_TYPE_MAP['json'],
-                enabled: true,
-            }];
-            onHeadersChange(updatedHeaders);
+            if (value.includes('application/json')) return 'json';
+            if (value.includes('application/xml')) return 'xml';
+            if (value.includes('text/html')) return 'html';
+            if (value.includes('text/plain')) return 'text';
         }
-    }, []);
+        return 'json'; // Default
+    };
+
+    const bodyType = getBodyTypeFromHeaders();
 
     // Manage Content-Type header based on body content
     useEffect(() => {
@@ -85,8 +73,6 @@ export default function RequestBody({ body, onChange, headers, onHeadersChange, 
     }, [isBodyDisabled, body, onChange]);
 
     const updateContentTypeHeader = (newBodyType: BodyType) => {
-        setBodyType(newBodyType);
-
         // Find existing content-type header
         const contentTypeIndex = headers.findIndex(h => h.key.toLowerCase() === 'content-type');
 
