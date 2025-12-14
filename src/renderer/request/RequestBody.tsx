@@ -1,6 +1,3 @@
-import { useState, useEffect } from 'react';
-import { TabsContent } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import {
     Select,
@@ -9,6 +6,9 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
+import { TabsContent } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { HttpMethod } from 'src/shared/types';
 
@@ -47,10 +47,22 @@ export default function RequestBody({
         const contentTypeHeader = headers.find((h) => h.key.toLowerCase() === 'content-type');
         if (contentTypeHeader) {
             const value = contentTypeHeader.value.toLowerCase();
-            if (value.includes('application/json')) return 'json';
-            if (value.includes('application/xml')) return 'xml';
-            if (value.includes('text/html')) return 'html';
-            if (value.includes('text/plain')) return 'text';
+
+            if (value.includes('application/json')) {
+                return 'json';
+            }
+
+            if (value.includes('application/xml')) {
+                return 'xml';
+            }
+
+            if (value.includes('text/html')) {
+                return 'html';
+            }
+
+            if (value.includes('text/plain')) {
+                return 'text';
+            }
         }
         return 'json'; // Default
     };
