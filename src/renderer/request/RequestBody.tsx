@@ -150,7 +150,7 @@ export default function RequestBody({
             <div className="flex flex-col gap-2">
                 {isBodyDisabled ? (
                     <div className="flex items-center justify-center min-h-[300px] text-zinc-500 text-sm">
-                        <p>{method} requests cannot have a request body.</p>
+                        <p>{t('request.noBody', { method })}</p>
                     </div>
                 ) : (
                     <>
@@ -163,10 +163,10 @@ export default function RequestBody({
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="json">JSON</SelectItem>
-                                    <SelectItem value="text">Text</SelectItem>
-                                    <SelectItem value="xml">XML</SelectItem>
-                                    <SelectItem value="html">HTML</SelectItem>
+                                    <SelectItem value="json">{t('request.body.type.json')}</SelectItem>
+                                    <SelectItem value="text">{t('request.body.type.text')}</SelectItem>
+                                    <SelectItem value="xml">{t('request.body.type.xml')}</SelectItem>
+                                    <SelectItem value="html">{t('request.body.type.html')}</SelectItem>
                                 </SelectContent>
                             </Select>
 
@@ -189,8 +189,6 @@ export default function RequestBody({
                             className="min-h-[300px] font-mono text-sm"
                             spellCheck={false}
                         />
-
-                        <p className="text-xs text-zinc-500">{t('request.body.hint')}</p>
                     </>
                 )}
             </div>

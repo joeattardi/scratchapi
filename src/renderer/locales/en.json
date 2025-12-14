@@ -17,6 +17,7 @@
     },
     "request": {
         "title": "Request",
+        "noBody": "{{method}} requests cannot have a request body.",
         "enterUrl": "Enter URL",
         "send": "Send",
         "method": "Method",
@@ -35,9 +36,14 @@
         "body": {
             "title": "Body",
             "placeholder": "Enter request body (JSON, XML, plain text, etc.)",
-            "hint": "Set Content-Type header to specify the body format",
             "format": "Format JSON",
-            "minify": "Minify JSON"
+            "minify": "Minify JSON",
+            "type": {
+                "json": "JSON",
+                "xml": "XML",
+                "text": "Plain Text",
+                "html": "HTML"
+            }
         }
     },
     "response": {
