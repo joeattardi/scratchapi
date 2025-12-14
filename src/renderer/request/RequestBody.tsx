@@ -11,14 +11,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { HttpMethod } from 'src/shared/types';
+import { HttpHeaderOption } from './types';
 
 interface RequestBodyProps {
     body: string;
     onChange: (body: string) => void;
-    headers: { id: string; key: string; value: string; enabled?: boolean }[];
-    onHeadersChange: (
-        headers: { id: string; key: string; value: string; enabled?: boolean }[]
-    ) => void;
+    headers: HttpHeaderOption[];
+    onHeadersChange: (headers: HttpHeaderOption[]) => void;
     method: HttpMethod;
 }
 
@@ -31,6 +30,31 @@ const CONTENT_TYPE_MAP: Record<BodyType, string> = {
     html: 'text/html'
 };
 
+function getBodyTypeFromHeaders(headers: HttpHeaderOption[]): BodyType {
+    const contentTypeHeader = headers.find((h) => h.key.toLowerCase() === 'content-type');
+    if (contentTypeHeader) {
+        const value = contentTypeHeader.value.toLowerCase();
+
+        if (value.includes('application/json')) {
+            return 'json';
+        }
+
+        if (value.includes('application/xml')) {
+            return 'xml';
+        }
+
+        if (value.includes('text/html')) {
+            return 'html';
+        }
+
+        if (value.includes('text/plain')) {
+            return 'text';
+        }
+    }
+
+    return 'json'; // Default
+}
+
 export default function RequestBody({
     body,
     onChange,
@@ -41,33 +65,7 @@ export default function RequestBody({
     const { t } = useTranslation();
 
     const isBodyDisabled = method === 'GET' || method === 'HEAD';
-
-    // Derive bodyType from headers instead of managing it as state
-    const getBodyTypeFromHeaders = (): BodyType => {
-        const contentTypeHeader = headers.find((h) => h.key.toLowerCase() === 'content-type');
-        if (contentTypeHeader) {
-            const value = contentTypeHeader.value.toLowerCase();
-
-            if (value.includes('application/json')) {
-                return 'json';
-            }
-
-            if (value.includes('application/xml')) {
-                return 'xml';
-            }
-
-            if (value.includes('text/html')) {
-                return 'html';
-            }
-
-            if (value.includes('text/plain')) {
-                return 'text';
-            }
-        }
-        return 'json'; // Default
-    };
-
-    const bodyType = getBodyTypeFromHeaders();
+    const bodyType = getBodyTypeFromHeaders(headers);
 
     // Manage Content-Type header based on body content
     useEffect(() => {
