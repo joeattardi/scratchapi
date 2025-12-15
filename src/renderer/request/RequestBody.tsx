@@ -7,11 +7,15 @@ import {
     SelectValue
 } from '@/components/ui/select';
 import { TabsContent } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { HttpMethod } from 'src/shared/types';
 import { HttpHeaderOption } from './types';
+import CodeMirror from '@uiw/react-codemirror';
+import { json } from '@codemirror/lang-json';
+import { xml } from '@codemirror/lang-xml';
+import { html } from '@codemirror/lang-html';
+import type { Extension } from '@codemirror/state';
 
 interface RequestBodyProps {
     body: string;
@@ -55,6 +59,19 @@ function getBodyTypeFromHeaders(headers: HttpHeaderOption[]): BodyType {
     return 'json'; // Default
 }
 
+function getLanguageExtension(bodyType: BodyType): Extension[] {
+    switch (bodyType) {
+        case 'json':
+            return [json()];
+        case 'xml':
+            return [xml()];
+        case 'html':
+            return [html()];
+        case 'text':
+            return [];
+    }
+}
+
 export default function RequestBody({
     body,
     onChange,
@@ -67,17 +84,11 @@ export default function RequestBody({
     const isBodyDisabled = method === 'GET' || method === 'HEAD';
     const bodyType = getBodyTypeFromHeaders(headers);
 
-    // Manage Content-Type header based on body content
+    // Add Content-Type header when body has content and no header exists
     useEffect(() => {
         const contentTypeIndex = headers.findIndex((h) => h.key.toLowerCase() === 'content-type');
 
-        if (!body.trim()) {
-            // Remove Content-Type header when body is empty
-            if (contentTypeIndex >= 0) {
-                const updatedHeaders = headers.filter((_, index) => index !== contentTypeIndex);
-                onHeadersChange(updatedHeaders);
-            }
-        } else if (contentTypeIndex < 0 && !isBodyDisabled) {
+        if (body.trim() && contentTypeIndex < 0 && !isBodyDisabled) {
             // Add Content-Type header when body has content and no header exists
             const updatedHeaders = [
                 ...headers,
@@ -182,12 +193,35 @@ export default function RequestBody({
                             )}
                         </div>
 
-                        <Textarea
+                        <CodeMirror
                             value={body}
-                            onChange={(e) => onChange(e.target.value)}
+                            onChange={onChange}
+                            extensions={getLanguageExtension(bodyType)}
                             placeholder={t('request.body.placeholder')}
-                            className="min-h-[300px] font-mono text-sm"
-                            spellCheck={false}
+                            className="border rounded-md overflow-hidden"
+                            basicSetup={{
+                                lineNumbers: true,
+                                highlightActiveLineGutter: true,
+                                highlightSpecialChars: true,
+                                foldGutter: true,
+                                drawSelection: true,
+                                dropCursor: true,
+                                allowMultipleSelections: true,
+                                indentOnInput: true,
+                                bracketMatching: true,
+                                closeBrackets: true,
+                                autocompletion: true,
+                                rectangularSelection: true,
+                                crosshairCursor: true,
+                                highlightActiveLine: true,
+                                highlightSelectionMatches: true,
+                                closeBracketsKeymap: true,
+                                searchKeymap: true,
+                                foldKeymap: true,
+                                completionKeymap: true,
+                                lintKeymap: true
+                            }}
+                            style={{ minHeight: '300px', fontSize: '14px' }}
                         />
                     </>
                 )}
