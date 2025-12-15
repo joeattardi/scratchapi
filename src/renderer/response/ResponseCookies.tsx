@@ -101,7 +101,7 @@ export default function ResponseCookies({ response }: ResponseCookiesProps) {
                                                     <div className="text-xs font-medium text-zinc-500 mb-1">
                                                         {t('cookies.domain')}
                                                     </div>
-                                                    <div className="text-sm text-zinc-700">
+                                                    <div className="text-sm text-zinc-700 font-mono">
                                                         {cookie.domain}
                                                     </div>
                                                 </div>
@@ -111,7 +111,7 @@ export default function ResponseCookies({ response }: ResponseCookiesProps) {
                                                     <div className="text-xs font-medium text-zinc-500 mb-1">
                                                         {t('cookies.path')}
                                                     </div>
-                                                    <div className="text-sm text-zinc-700">
+                                                    <div className="text-sm text-zinc-700 font-mono">
                                                         {cookie.path}
                                                     </div>
                                                 </div>
